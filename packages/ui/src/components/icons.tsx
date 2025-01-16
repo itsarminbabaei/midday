@@ -18,12 +18,7 @@ import { ArchiveIcon } from "@radix-ui/react-icons";
 import { CloudFogIcon } from "lucide-react";
 import { CiDumbbell, CiMaximize1, CiMinimize1 } from "react-icons/ci";
 import { FaXTwitter } from "react-icons/fa6";
-import { 
-  FiGithub, 
-  FiLoader, 
-  FiMaximize2, 
-  FiMinimize2 
-} from "react-icons/fi";
+import { FiGithub, FiLoader, FiMaximize2, FiMinimize2 } from "react-icons/fi";
 import { GrLounge } from "react-icons/gr";
 import {
   LuBedDouble,
@@ -197,17 +192,18 @@ import {
   MdTrendingUp,
 } from "react-icons/md";
 import { PiDiscordLogo } from "react-icons/pi";
-import { 
+import {
   FaArrowsRotate,
   FaLocationDot,
   FaArrowRightLong,
-  FaUser, 
-  FaMinus, 
+  FaUser,
+  FaMinus,
   FaPlus,
   FaRegCalendar,
   FaCaretDown,
   FaPlaneDeparture,
   FaPlaneArrival,
+  FaRegMessage,
 } from "react-icons/fa6";
 
 export const Icons = {
@@ -699,6 +695,90 @@ export const Icons = {
       </defs>
     </svg>
   ),
+  MessageLines: (props: any) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={22}
+      height={22}
+      fill="currentColor"
+      viewBox="0 0 512 512"
+      {...props}
+    >
+      <path d="M160 448l0-32-32 0-96 0L0 416l0-32L0 32 0 0 32 0 480 0l32 0 0 32 0 352 0 32-32 0-176 0L192 490.7 160 512l0-38.5 0-25.5zm0-64l32 0 0 32 0 36.2 94.2-62.8 8.1-5.4 9.7 0 176 0 0-352L32 32l0 352 128 0zM144 144l224 0 16 0 0 32-16 0-224 0-16 0 0-32 16 0zm0 96l128 0 16 0 0 32-16 0-128 0-16 0 0-32 16 0z" />
+    </svg>
+  ),
+  PlaneDeparture: (props: any) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={22}
+      height={22}
+      fill="currentColor"
+      viewBox="0 0 640 512"
+      {...props}
+    >
+      <path d="M381 114.9L160 32 64 80 234.6 189.7 136 240 64 208 0 240 96 352l160 0L535.6 212.2c46.5-23.3 82.5-63.3 100.8-112C645.9 75 627.2 48 600.2 48l-57.4 0c-20.2 0-40.2 4.8-58.2 14L381 114.9zM0 448l0 64 32 0 576 0 32 0 0-64-32 0L32 448 0 448z" />
+    </svg>
+  ),
+  BedFront: (props: any) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={22}
+      height={22}
+      fill="currentColor"
+      viewBox="0 0 512 512"
+      {...props}
+    >
+      <path d="M32 32l0 160 48 0 0-64 160 0 0 64 32 0 0-64 160 0 0 64 48 0 0-160L32 32zM24 224L0 224l0 24L0 392l0 64 0 24 48 0 0-24 0-40 416 0 0 40 0 24 48 0 0-24 0-64 0-144 0-24-24 0L24 224zM464 368L48 368l0-96 416 0 0 96z" />
+    </svg>
+  ),
+  BallotCheck: (props: any) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={22}
+      height={22}
+      fill="currentColor"
+      viewBox="0 0 448 512"
+      {...props}
+    >
+      <path d="M400 48l0 416L48 464 48 48l352 0zM48 0L0 0 0 48 0 464l0 48 48 0 352 0 48 0 0-48 0-416 0-48L400 0 48 0zM80 96l0 64 64 0 0-64L80 96zm64 320l0-64-64 0 0 64 64 0zm32-312l0 48 24 0 144 0 24 0 0-48-24 0-144 0-24 0zm32 128l0 48 24 0 112 0 24 0 0-48-24 0-112 0-24 0zM176 360l0 48 24 0 144 0 24 0 0-48-24 0-144 0-24 0zm-4.7-116.7L182.6 232 160 209.4l-11.3 11.3L112 257.4 99.3 244.7 88 233.4 65.4 256l11.3 11.3 24 24L112 302.6l11.3-11.3 48-48z" />
+    </svg>
+  ),
+  UserGroup: (props: any) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={22}
+      height={22}
+      fill="currentColor"
+      viewBox="0 0 640 512"
+      {...props}
+    >
+      <path d="M64 304L53.6 337.9l-34.5 112L14.8 464 0 512l50.2 0L65 512l318 0 14.8 0 50.2 0-14.8-48-4.3-14.1-34.5-112L384 304l-35.5 0L224 304 99.5 304 64 304zM332.8 464l-217.6 0L65 464l14.8-48 19.7-64 249.1 0 19.7 64L383 464l-50.2 0zM352 128A128 128 0 1 0 96 128a128 128 0 1 0 256 0zm-208 0a80 80 0 1 1 160 0 80 80 0 1 1 -160 0zM640 512L576 320l-153.6 0 56.2 182.6 2.9 9.4L640 512zM432 256c61.9 0 112-50.1 112-112s-50.1-112-112-112c-24.8 0-47.7 8.1-66.3 21.7C377.4 75.9 384 101.2 384 128c0 35.6-11.6 68.5-31.3 95.1C373 243.4 401 256 432 256z" />
+    </svg>
+  ),
+  ChartMixed: (props: any) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={22}
+      height={22}
+      fill="currentColor"
+      viewBox="0 0 512 512"
+      {...props}
+    >
+      <path d="M340 217L500 89 460 39 319.4 151.5 211.2 70.4 191.4 55.5 172 71 12 199l40 50L192.6 136.5l108.2 81.1 19.8 14.9L340 217zm-180 7l0 256 64 0 0-256-64 0zM32 320l0 160 64 0 0-160-64 0zm320-32l-64 0 0 192 64 0 0-192zm64-64l0 256 64 0 0-256-64 0z" />
+    </svg>
+  ),
+  Gear: (props: any) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={22}
+      height={22}
+      fill="currentColor"
+      viewBox="0 0 512 512"
+      {...props}
+    >
+      <path d="M328 0l14.6 66.8c11.9 5.5 23.3 12 33.8 19.6l65.2-20.8 72 124.7-50.6 46.1c.6 6.4 .9 12.9 .9 19.5s-.3 13.1-.9 19.5l50.6 46.1-72 124.7-65.2-20.8c-10.6 7.5-21.9 14.1-33.8 19.6L328 512l-144 0-14.6-66.8c-11.9-5.5-23.3-12-33.8-19.6L70.3 446.4l-72-124.7 50.6-46.1c-.6-6.4-.9-12.9-.9-19.5s.3-13.1 .9-19.5L-1.7 190.4l72-124.7 65.2 20.8c10.6-7.5 21.9-14.1 33.8-19.6L184 0 328 0zm63 132.2l-22.9 7.3-19.5-13.9c-8.2-5.8-16.9-10.9-26-15.1l-21.8-10-5.1-23.4L289.4 48l-66.7 0-6.4 29.1-5.1 23.4-21.8 10c-9.2 4.2-17.9 9.3-26 15.1l-19.5 13.9L121 132.2l-28.4-9L59.2 180.9l22 20.1 17.7 16.1-2.2 23.8c-.5 5-.7 10-.7 15.1s.2 10.1 .7 15.1l2.2 23.8L81.2 311l-22 20.1 33.4 57.8 28.4-9 22.9-7.3 19.5 13.9c8.2 5.8 16.9 10.9 26 15.1l21.8 10 5.1 23.4 6.4 29.1 66.7 0 6.4-29.1 5.1-23.4 21.8-10c9.2-4.2 17.9-9.3 26-15.1l19.5-13.9 22.9 7.3 28.4 9 33.4-57.8L430.8 311l-17.7-16.1 2.2-23.8c.5-5 .7-10 .7-15.1s-.2-10.1-.7-15.1l-2.2-23.8L430.8 201l22.1-20.1-33.4-57.8-28.4 9zM304 256a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm-144 0a96 96 0 1 1 192 0 96 96 0 1 1 -192 0z" />
+    </svg>
+  ),
   Overview: MdBarChart,
   Apps: MdOutlineApps,
   Transactions: MdOutlineListAlt,
@@ -815,7 +895,6 @@ export const Icons = {
   CabinClass: MdOutlineFlightClass,
   Explore: MdOutlineExplore,
   Stays: MdLocalHotel,
-  Bed: MdOutlineBed,
   Luggage: MdOutlineLuggage,
   Minus: MdOutlineRemove,
   Plus: MdOutlineAdd,
@@ -885,6 +964,5 @@ export const Icons = {
   Room: MdOutlineBedroomParent,
   ArrowRotate: FaArrowsRotate,
   CaretDown: FaCaretDown,
-  PlaneDeparture: FaPlaneDeparture,
   PlaneArrival: FaPlaneArrival,
 };

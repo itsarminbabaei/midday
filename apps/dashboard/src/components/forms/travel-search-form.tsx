@@ -6,7 +6,8 @@ import { RecentSearchCard } from "@/components/cards/recent-search-card";
 import { TravelLocation } from "@/components/travel/travel-location";
 import { TravelPeriod } from "@/components/travel/travel-period";
 import { TravelType } from "@/components/travel/travel-type";
-import { TravelTravellerCabin } from "@/components/travel/travel-traveller-cabin";
+import { TravelTraveller } from "@/components/travel/travel-traveller";
+import { TravelCabin } from "@/components/travel/travel-cabin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@travelese/ui/button";
 import {
@@ -21,9 +22,11 @@ import { Separator } from "@travelese/ui/separator";
 import { ShineBorder } from "@travelese/ui/shine-border";
 import { SubmitButton } from "@travelese/ui/submit-button";
 import { useToast } from "@travelese/ui/use-toast";
+import { Popover, PopoverContent, PopoverTrigger } from "@travelese/ui/popover";
 import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
+import { useI18n } from "@/locales/client";
 
 const recentSearches = [
   {
@@ -72,6 +75,7 @@ export function TravelSearchForm({
   onChange = () => { },
 }: Props) {
   const { toast } = useToast();
+  const t = useI18n();
 
   const searchTravel = useAction(searchTravelAction, {
     onSuccess: () => {
@@ -90,6 +94,7 @@ export function TravelSearchForm({
       user_id: userId,
       currency,
       travel_type: "one_way",
+      cabin_class: "economy",
       slices: [{ origin: "", destination: "", departure_date: "" }],
       passengers: [{ type: "adult" }],
     },
@@ -98,6 +103,13 @@ export function TravelSearchForm({
   const isSubmitting = searchTravel.status === "executing";
   const travelType = form.watch("travel_type");
   const slices = form.watch("slices") || [];
+  const currentPassengers = form.watch("passengers");
+  const currentCabinClass = form.watch("cabin_class");
+
+  const totalTravellers = currentPassengers.reduce(
+    (sum, traveller) => sum + 1,
+    0
+  );
 
   const handleSwapLocations = () => {
     const currentSlices = form.getValues("slices");
@@ -183,23 +195,74 @@ export function TravelSearchForm({
                     )}
                   />
 
-                  <FormField
-                    control={form.control}
-                    name="passengers"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <TravelTravellerCabin
-                            form={form}
-                            searchType={searchType}
-                            onChange={onChange}
-                            isSubmitting={isSubmitting}
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start border-none"
+                        disabled={isSubmitting}
+                      >
+                        <Icons.User className="size-3 mr-1" />
+                        <span className="flex-grow line-clamp-1 text-ellipsis text-left">
+                          {totalTravellers} {totalTravellers === 1 ? 'Traveller' : 'Travellers'}, 
+                          {` ${t(`cabin_class.${currentCabinClass}`)}`}
+                        </span>
+                        <Icons.CaretDown className="size-3 ml-1" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[350px]" sideOffset={10}>
+                      <div className="p-4 space-y-4">
+                        <div className="space-y-4">
+                          <h4 className="text-sm font-medium mb-3">
+                            Passengers
+                          </h4>
+                          <FormField
+                            control={form.control}
+                            name="passengers"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormControl>
+                                  <TravelTraveller
+                                    value={field.value}
+                                    onChange={(value) => {
+                                      field.onChange(value);
+                                      onChange({ passengers: value });
+                                    }}
+                                    searchType={searchType}
+                                    disabled={isSubmitting}
+                                  />
+                                </FormControl>
+                              </FormItem>
+                            )}
                           />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                        </div>
+
+                        <Separator />
+
+                        <div className="space-y-4">
+                          <h4 className="text-sm font-medium">Cabin Class</h4>
+                          <FormField
+                            control={form.control}
+                            name="cabin_class"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormControl>
+                                  <TravelCabin
+                                    value={field.value}
+                                    onChange={(value) => {
+                                      field.onChange(value);
+                                      onChange({ cabin_class: value });
+                                    }}
+                                    disabled={isSubmitting}
+                                  />
+                                </FormControl>
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
 
@@ -396,6 +459,7 @@ export function TravelSearchForm({
                     size="icon"
                     variant="ghost"
                     onClick={handleSwapLocations}
+                  
                   >
                     <Icons.ArrowRotate className="size-4" />
                   </Button>
@@ -502,3 +566,4 @@ export function TravelSearchForm({
     </div>
   );
 }
+
