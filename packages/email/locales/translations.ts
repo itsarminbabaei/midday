@@ -42,8 +42,8 @@ export function translations(locale: string, params?: TranslationParams) {
         "transactions.amount": "Amount",
         "transactions.date": "Date",
         "transactions.description": "Description",
-        "invite.subject": `${params?.invitedByName} invited you to the ${params?.teamName} team on Midday`,
-        "invite.preview": `Join ${params?.teamName} on Midday`,
+        "invite.subject": `${params?.invitedByName} invited you to the ${params?.teamName} team on Travelese`,
+        "invite.preview": `Join ${params?.teamName} on Travelese`,
         "invite.title1": "Join",
         "invite.title2": "on",
         "invite.link1": "has invited you to the",
@@ -58,63 +58,63 @@ export function translations(locale: string, params?: TranslationParams) {
         "invoice.overdue.subject": `Invoice #${params?.invoiceNumber} is overdue`,
         "invoice.paid.subject": `Invoice #${params?.invoiceNumber} has been paid`,
       };
-    case "sv":
+    case "fr":
       return {
-        "notifications.match": `Vi matchade transaktionen “${params?.transactionName}” mot “${params?.fileName}”`,
+        "notifications.match": `Nous avons rapproché la transaction "${params?.transactionName}" avec "${params?.fileName}"`,
         "notifications.transactions":
           params?.numberOfTransactions &&
           typeof params?.numberOfTransactions === "number" &&
           params?.numberOfTransactions > 1
-            ? `Du har ${params?.numberOfTransactions} nya transaktioner`
-            : `Du har en ny transaktion på ${params?.amount} från ${params?.name}`,
-        "notifications.invoicePaid": `Faktura ${params?.invoiceNumber} har betalats`,
-        "notifications.invoiceOverdue": `Faktura ${params?.invoiceNumber} är försenad`,
-        "transactions.subject": "Nya transaktioner",
-        "transactions.preview": `Hej ${params?.firstName}, Vi hittade ${
+            ? `Vous avez ${params?.numberOfTransactions} nouvelles transactions`
+            : `Vous avez une nouvelle transaction de ${params?.amount} de ${params?.name}`,
+        "notifications.invoicePaid": `La facture ${params?.invoiceNumber} a été payée`,
+        "notifications.invoiceOverdue": `La facture ${params?.invoiceNumber} est en retard`,
+        "transactions.subject": "Nouvelles transactions",
+        "transactions.preview": `Bonjour ${params?.firstName}, Nous avons trouvé ${
           params?.numberOfTransactions
         } ${
           params?.numberOfTransactions > 1
-            ? "nya transaktioner"
-            : "nya transaktion"
+            ? "nouvelles transactions"
+            : "nouvelle transaction"
         } .`,
-        "transactions.title1": "Du har ",
+        "transactions.title1": "Vous avez ",
         "transactions.title2": `${params?.numberOfTransactions} ${
           params?.numberOfTransactions > 1
-            ? "nya transaktioner"
-            : "nya transaktion"
+            ? "nouvelles transactions"
+            : "nouvelle transaction"
         }`,
-        "transactions.description1": `Hej ${params?.firstName}`,
-        "transactions.description2": "Vi hittade",
+        "transactions.description1": `Bonjour ${params?.firstName}`,
+        "transactions.description2": "Nous avons trouvé",
         "transactions.description3": `${params?.numberOfTransactions} ${
           params?.numberOfTransactions > 1
-            ? "nya transaktioner"
-            : "nya transaktion"
+            ? "nouvelles transactions"
+            : "nouvelle transaction"
         }`,
         "transactions.description4":
-          "på ditt konto som vi försöker matcha mot kvitton i din inkorg i upp till 45 dagar. Du kan också svara på detta email med dina kvitton.",
-        "transactions.button": "Visa transaktioner",
+          "sur votre compte que nous essayons de rapprocher avec les reçus dans votre boîte de réception pendant jusqu'à 45 jours. Vous pouvez également répondre à cet e-mail avec vos reçus.",
+        "transactions.button": "Voir les transactions",
         "transactions.footer":
           " Nam imperdiet congue volutpat. Nulla quis facilisis lacus. Vivamus convallis sit amet lectus eget tincidunt. Vestibulum vehicula rutrum nisl, sed faucibus neque. Donec lacus mi, rhoncus at dictum eget, pulvinar at metus. Donec cursus tellus erat, a hendrerit elit rutrum ut. Fusce quis tristique ligula. Etiam sit amet enim vitae mauris auctor blandit id et nibh.",
-        "transactions.settings": "Inställningar",
-        "transactions.amount": "Belopp",
-        "transactions.date": "Datum",
-        "transactions.description": "Beskrivning",
-        "invite.subject": `${params?.invitedByName} bjöd in dig till ${params?.teamName} på Midday`,
-        "invite.preview": `Gå med i ${params?.teamName} på Midday`,
-        "invite.title1": "Gå med",
-        "invite.title2": "på",
-        "invite.link1": "har bjudit in dig till",
-        "invite.link2": "på",
-        "invite.join": "Gå med",
+        "transactions.settings": "Paramètres",
+        "transactions.amount": "Montant",
+        "transactions.date": "Date",
+        "transactions.description": "Description",
+        "invite.subject": `${params?.invitedByName} vous a invité à rejoindre ${params?.teamName} sur Travelese`,
+        "invite.preview": `Rejoindre ${params?.teamName} sur Travelese`,
+        "invite.title1": "Rejoindre",
+        "invite.title2": "sur",
+        "invite.link1": "vous a invité à",
+        "invite.link2": "sur",
+        "invite.join": "Rejoindre",
         "invite.link3":
-          "eller kopiera och klistra in denna URL i din webbläsare",
-        "invite.footer1": "Denna inbjudan var avsedd för",
-        "invite.footer2": "Denna inbjudan skickades från",
-        "invite.footer3": "belägen i",
+          "ou copiez et collez cette URL dans votre navigateur",
+        "invite.footer1": "Cette invitation était destinée à",
+        "invite.footer2": "Cette invitation a été envoyée depuis",
+        "invite.footer3": "situé à",
         "invite.footer4":
-          "Om du inte väntade dig den här inbjudan kan du ignorera det här e-postmeddelandet. Om du är orolig för ditt kontos säkerhet, vänligen svara på det här e-postmeddelandet för att komma i kontakt med oss.",
-        "invoice.overdue.subject": `Faktura #${params?.invoiceNumber} är försenad`,
-        "invoice.paid.subject": `Faktura #${params?.invoiceNumber} har betalats`,
+          "Si vous n'attendiez pas cette invitation, vous pouvez l'ignorer. Si vous êtes préoccupé par la sécurité de votre compte, veuillez répondre à cet e-mail pour nous contacter.",
+        "invoice.overdue.subject": `Facture #${params?.invoiceNumber} est en retard`,
+        "invoice.paid.subject": `Facture #${params?.invoiceNumber} a été payée`,
       };
 
     default:

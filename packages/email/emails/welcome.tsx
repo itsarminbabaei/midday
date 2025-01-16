@@ -67,13 +67,13 @@ export const WelcomeEmail = ({ fullName = "Armin Babaei" }: Props) => {
 
             <span className="font-medium">Hi {firstName},</span>
             <Text className="text-[#121212]">
-              Welcome to Midday! I'm Armin, one of the founders.
+              Welcome to Travelese! I'm Armin, one of the founders.
               <br />
               <br />
               We've been working on Travelese for the past months, and during
               this time, we've implemented the basic functionality to get
               started. However, with your feedback, we can make the right
-              decisions to help run your business smarter.
+              decisions to help book your travels smarter.
               <br />
               <br />
               During our beta phase, you may encounter some bugs, but we

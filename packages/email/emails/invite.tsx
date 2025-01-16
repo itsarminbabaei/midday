@@ -79,7 +79,7 @@ export const InviteEmail = ({
             <Logo />
             <Heading className="mx-0 my-[30px] p-0 text-[24px] font-normal text-[#121212] text-center">
               {t("invite.title1")} <strong>{teamName}</strong>{" "}
-              {t("invite.title2")} <strong>Midday</strong>
+              {t("invite.title2")} <strong>Travelese</strong>
             </Heading>
 
             <Text className="text-[14px] leading-[24px] text-[#121212]">
@@ -91,7 +91,7 @@ export const InviteEmail = ({
                 {invitedByEmail}
               </Link>
               ) {t("invite.link1")} <strong>{teamName}</strong>{" "}
-              {t("invite.link2")} <strong>Midday</strong>.
+              {t("invite.link2")} <strong>Travelese</strong>.
             </Text>
             <Section className="mb-[42px] mt-[32px] text-center">
               <Button
