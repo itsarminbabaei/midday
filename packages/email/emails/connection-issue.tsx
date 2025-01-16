@@ -74,7 +74,7 @@ export const ConnectionIssueEmail = ({
               <br />
               We wanted to let you know that your bank{" "}
               <strong>{bankName}</strong> for team <strong>{teamName}</strong>{" "}
-              is currently disconnected. To keep Midday running smoothly, we'll
+              is currently disconnected. To keep Travelese running smoothly, we'll
               need you to reconnect your bank.
               <br />
               <br />

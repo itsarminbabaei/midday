@@ -56,8 +56,8 @@ export async function POST(req: Request) {
   if (fullName) {
     await resend.emails.send({
       to: email,
-      subject: "Welcome to Midday",
-      from: "Pontus from Midday <pontus@midday.ai>",
+      subject: "Welcome to Travelese",
+      from: "Armin from Travelese <armin@travelese.ai>",
       html: await render(
         WelcomeEmail({
           fullName,

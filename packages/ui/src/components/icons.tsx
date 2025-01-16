@@ -205,7 +205,9 @@ import {
   FaMinus, 
   FaPlus,
   FaRegCalendar,
-  FaCaretDown
+  FaCaretDown,
+  FaPlaneDeparture,
+  FaPlaneArrival,
 } from "react-icons/fa6";
 
 export const Icons = {
@@ -883,4 +885,6 @@ export const Icons = {
   Room: MdOutlineBedroomParent,
   ArrowRotate: FaArrowsRotate,
   CaretDown: FaCaretDown,
+  PlaneDeparture: FaPlaneDeparture,
+  PlaneArrival: FaPlaneArrival,
 };
