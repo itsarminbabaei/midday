@@ -20,49 +20,39 @@ import { useState } from "react";
 import { useLongPress } from "use-long-press";
 
 const icons = {
-  "/": () => <Icons.Overview size={22} />,
-  "/travel": () => <Icons.Travel size={22} />,
-  "/travellers": () => <Icons.Travellers size={22} />,
-  "/transactions": () => <Icons.Transactions size={22} />,
-  "/invoices": () => <Icons.Invoice size={22} />,
-  "/settings": () => <Icons.Settings size={22} />,
-  "/apps": () => <Icons.Apps size={22} />,
-  "/inbox": () => <Icons.Inbox2 size={22} />,
-  "/vault": () => <Icons.Files size={22} />,
+  "/": () => <Icons.MessageLines size={22} />,
+  "/flights": () => <Icons.PlaneDeparture size={22} />,
+  "/stays": () => <Icons.BedFront size={22} />,
+  "/itineraries": () => <Icons.BallotCheck size={22} />,
+  "/travellers": () => <Icons.UserGroup size={22} />,
+  "/stats": () => <Icons.ChartMixed size={22} />,
+  "/settings": () => <Icons.Gear size={22} />,
 };
 
 const defaultItems = [
   {
-    path: "/",
-    name: "Overview",
+    path:"/",
+    name: "Assistant"
   },
   {
-    path: "/travel",
-    name: "Travel",
+    path: "/flights",
+    name: "Flights",
+  },
+  {
+    path: "/stays",
+    name: "Stays",
+  },
+  {
+    path: "/itineraries",
+    name: "Itineraries",
   },
   {
     path: "/travellers",
     name: "Travellers",
   },
   {
-    path: "/invoices",
-    name: "Invoices",
-  },
-  {
-    path: "/transactions",
-    name: "Transactions",
-  },
-  {
-    path: "/inbox",
-    name: "Inbox",
-  },
-  {
-    path: "/vault",
-    name: "Vault",
-  },
-  {
-    path: "/apps",
-    name: "Apps",
+    path: "/stats",
+    name: "Stats",
   },
   {
     path: "/settings",
