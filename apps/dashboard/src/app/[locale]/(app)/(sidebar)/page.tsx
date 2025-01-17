@@ -1,90 +1,15 @@
-import { ChartSelectors } from "@/components/charts/chart-selectors";
-import { Charts } from "@/components/charts/charts";
-import { EmptyState } from "@/components/charts/empty-state";
-import { OverviewModal } from "@/components/modals/overview-modal";
-import { Widgets } from "@/components/widgets";
-import { Cookies } from "@/utils/constants";
-import { getTeamBankAccounts } from "@travelese/supabase/cached-queries";
-import { cn } from "@travelese/ui/cn";
-import { startOfMonth, startOfYear, subMonths } from "date-fns";
+import { PageChat } from "@/components/chat/chat-page"
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
-
-// NOTE: GoCardLess serverAction needs this currently
-// (Fetch accounts takes up to 20s and default limit is 15s)
-export const maxDuration = 30;
 
 export const metadata: Metadata = {
-  title: "Overview | Travelese",
+  title: "Assistant | Travelese",
 };
 
-const defaultValue = {
-  from: subMonths(startOfMonth(new Date()), 12).toISOString(),
-  to: new Date().toISOString(),
-  period: "monthly",
-};
-
-export default async function Overview({
-  searchParams,
-}: {
-  searchParams: Record<string, string>;
-}) {
-  console.log('SERVER: Current Timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
-
-  console.log('SERVER: defaultValue', defaultValue);
-  console.log('SERVER: defaultValue.from', defaultValue.from);
-  console.log('SERVER: defaultValue.to', defaultValue.to);
-  console.log('SERVER: searchParams', searchParams);
-
-  const accounts = await getTeamBankAccounts();
-  const chartType = cookies().get(Cookies.ChartType)?.value ?? "profit";
-
-  const hideConnectFlow = cookies().has(Cookies.HideConnectFlow);
-
-  const initialPeriod = cookies().has(Cookies.SpendingPeriod)
-    ? JSON.parse(cookies().get(Cookies.SpendingPeriod)?.value ?? "{}")
-    : {
-        id: "this_year",
-        from: startOfYear(new Date()).toISOString(),
-        to: new Date().toISOString(),
-      };
-
-  const value = {
-    ...(searchParams.from && { from: searchParams.from }),
-    ...(searchParams.to && { to: searchParams.to }),
-  };
-
-  const isEmpty = !accounts?.data?.length;
-
+export default function Page() {
   return (
-    <>
-      <div>
-        <div className="h-[530px] mb-4">
-          <ChartSelectors defaultValue={defaultValue} />
-
-          <div className="mt-8 relative">
-            {isEmpty && <EmptyState />}
-
-            <div className={cn(isEmpty && "blur-[8px] opacity-20")}>
-              <Charts
-                value={value}
-                defaultValue={defaultValue}
-                disabled={isEmpty}
-                type={chartType}
-                currency={searchParams.currency}
-              />
-            </div>
-          </div>
-        </div>
-
-        <Widgets
-          initialPeriod={initialPeriod}
-          disabled={isEmpty}
-          searchParams={searchParams}
-        />
-      </div>
-
-      <OverviewModal defaultOpen={isEmpty && !hideConnectFlow} />
-    </>
+    <div className="mt-4 h-[calc(113vh-200px)]">
+      <PageChat />
+    </div>
   );
 }
+
