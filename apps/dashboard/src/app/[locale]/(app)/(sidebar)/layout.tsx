@@ -88,7 +88,7 @@ export default async function Layout({
         >
           <Sidebar />
 
-          <div className="mx-4 md:ml-[95px] md:mr-10 pb-8">
+          <div className="mx-4 md:ml-[90px] md:mr-4">
             <Header />
             {children}
           </div>
