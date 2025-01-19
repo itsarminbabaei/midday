@@ -34,6 +34,8 @@ export const env = createEnv({
     TELLER_SIGNING_SECRET: z.string(),
     DUFFEL_TRAVELESE_PRO_ACCESS_TOKEN: z.string(),
     DUFFEL_TRAVELESE_PRO_WEBHOOK_SECRET: z.string(),
+    AMADEUS_API_KEY: z.string(),
+    AMADEUS_API_SECRET: z.string(),
   },
   /**
    * Specify your client-side environment variables schema here.
@@ -92,6 +94,8 @@ export const env = createEnv({
       process.env.DUFFEL_TRAVELESE_PRO_ACCESS_TOKEN,
     DUFFEL_TRAVELESE_PRO_WEBHOOK_SECRET:
       process.env.DUFFEL_TRAVELESE_PRO_WEBHOOK_SECRET,
+    AMADEUS_API_KEY: process.env.AMADEUS_API_KEY,
+    AMADEUS_API_SECRET: process.env.AMADEUS_API_SECRET,
   },
   skipValidation: !!process.env.CI || !!process.env.SKIP_ENV_VALIDATION,
 });
