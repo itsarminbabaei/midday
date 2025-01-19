@@ -39,7 +39,10 @@
         "SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING",
         "SLACK_CLIENT_SECRET",
         "SLACK_CLIENT_ID",
-        "SLACK_SIGNING_SECRET"
+        "SLACK_SIGNING_SECRET",
+        "DUFFEL_TRAVELESE_PRO_ACCESS_TOKEN",
+        "AMADEUS_API_KEY",
+        "AMADEUS_API_SECRET"
       ],
       "inputs": ["$TURBO_DEFAULT$", ".env"],
       "dependsOn": ["^build"],
