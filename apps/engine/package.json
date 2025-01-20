@@ -9,9 +9,11 @@
     "check:types": "tsc --noEmit"
   },
   "dependencies": {
+    "@duffel/api": "^4.1.0",
     "@hono/swagger-ui": "^0.5.0",
     "@hono/zod-openapi": "^0.18.3",
     "@hono/zod-validator": "^0.4.1",
+    "amadeus": "^11.0.0",
     "hono": "^4.6.13",
     "plaid": "^30.0.0",
     "typesense": "^1.8.2",
