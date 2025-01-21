@@ -3,7 +3,7 @@ import type {
   GetConnectionStatusRequest,
   GetConnectionStatusResponse,
   ProviderParams,
-} from "../types";
+} from "../../types";
 import type {
   AuthenticatedRequest,
   DisconnectAccountRequest,
