@@ -1,4 +1,4 @@
-import type { Provider } from "../interface";
+import type { Provider } from "../../interface";
 import type {
   DeleteAccountsRequest,
   DeleteConnectionRequest,
@@ -7,7 +7,7 @@ import type {
   GetConnectionStatusRequest,
   GetTransactionsRequest,
   ProviderParams,
-} from "../types";
+} from "../../types";
 import { TellerApi } from "./teller-api";
 import {
   transformAccount,

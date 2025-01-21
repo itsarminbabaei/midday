@@ -6,7 +6,7 @@ import type {
   Account as BaseAccount,
   Balance as BaseAccountBalance,
   Transaction as BaseTransaction,
-} from "../types";
+} from "../../types";
 import type {
   FormatAmount,
   Transaction,

@@ -13,7 +13,7 @@ import {
   Products,
   type Transaction,
 } from "plaid";
-import type { GetInstitutionsRequest, ProviderParams } from "../types";
+import type { GetInstitutionsRequest, ProviderParams } from "../../types";
 import type {
   DisconnectAccountRequest,
   GetAccountBalanceRequest,
