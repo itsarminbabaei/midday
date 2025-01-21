@@ -8,5 +8,5 @@ export interface FlightOffersSearchRequest {
     children?: number;
     infants?: number;
   };
-  cabinClass?: 'ECONOMY' | 'PREMIUM_ECONOMY' | 'BUSINESS' | 'FIRST';
+  cabinClass?: "ECONOMY" | "PREMIUM_ECONOMY" | "BUSINESS" | "FIRST";
 }

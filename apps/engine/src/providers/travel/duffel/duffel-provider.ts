@@ -1,16 +1,16 @@
 import type { Provider } from "../../interface";
 import type { ProviderParams } from "../../types";
 import { DuffelApi } from "./duffel-api";
-import { 
-  transformOffer, 
-  transformOrder, 
+import {
+  transformOffer,
+  transformOrder,
   transformSeatMap,
   transformOrderCancellation,
   transformOrderChangeRequest,
   transformOrderChangeOffer,
   transformOrderChange,
   transformPartialOfferRequest,
-  transformAirlineInitiatedChange
+  transformAirlineInitiatedChange,
 } from "./transform";
 
 export class DuffelProvider implements Provider {
@@ -169,4 +169,3 @@ export class DuffelProvider implements Provider {
     return transformAirlineInitiatedChange(response);
   }
 }
-

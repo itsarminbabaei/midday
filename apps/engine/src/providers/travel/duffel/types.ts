@@ -1,6 +1,6 @@
-import type { 
+import type {
   OfferRequest,
-  Offer, 
+  Offer,
   PassengerType,
   CabinClass,
   ListOffersParams,
@@ -25,10 +25,7 @@ import type {
   AirlineInitiatedChangeActionTaken,
 } from "@duffel/api/types";
 
-import type {
-  SelectedPartialOffersParams
-} from "@duffel/api/booking/PartialOfferRequests/PartialOfferRequestTypes";
-
+import type { SelectedPartialOffersParams } from "@duffel/api/booking/PartialOfferRequests/PartialOfferRequestTypes";
 
 export type GetOfferRequest = {
   id: string;
@@ -50,7 +47,7 @@ export type ListOffersResponse = Offer[];
 
 export type ListOrdersRequest = {
   awaiting_payment?: boolean;
-  'passenger_name[]'?: string[];
+  "passenger_name[]"?: string[];
   booking_reference?: string;
   limit?: number;
   before?: string;
@@ -84,7 +81,7 @@ export type CreateOrderRequest = {
     amount: string;
     currency: string;
   }>;
-  type: 'instant' | 'pay_later';
+  type: "instant" | "pay_later";
   metadata?: Record<string, string>;
 };
 export type CreateOrderResponse = Order;
@@ -121,7 +118,7 @@ export type AddOrderServiceResponse = Order;
 
 export type CreatePaymentRequest = {
   order_id: string;
-  payment: Omit<Payment, 'created_at' | 'id'>;
+  payment: Omit<Payment, "created_at" | "id">;
 };
 export type CreatePaymentResponse = Payment;
 

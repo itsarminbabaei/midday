@@ -13,7 +13,7 @@ type AmadeusErrorResponse = {
 export function isError(error: unknown) {
   if (!error) return false;
   if (!(error instanceof Error)) return false;
-  
+
   const amadeusError = error as AmadeusErrorResponse;
   if (amadeusError.response?.result?.errors) {
     const [error] = amadeusError.response.result.errors;
@@ -25,4 +25,3 @@ export function isError(error: unknown) {
 
   return false;
 }
-

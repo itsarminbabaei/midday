@@ -27,7 +27,13 @@ import type {
 export class Provider {
   #name?: string;
 
-  #provider: DuffelProvider | AmadeusProvider | PlaidProvider | TellerProvider | GoCardLessProvider | null = null;
+  #provider:
+    | DuffelProvider
+    | AmadeusProvider
+    | PlaidProvider
+    | TellerProvider
+    | GoCardLessProvider
+    | null = null;
 
   constructor(params?: ProviderParams) {
     this.#name = params?.provider;
@@ -65,24 +71,23 @@ export class Provider {
       const [
         isDuffelHealthy,
         isAmadeusHealthy,
-        isPlaidHealthy, 
-        isGocardlessHealthy, 
-        isTellerHealthy
-      ] =
-        await Promise.all([
-          duffel.getHealthCheck(),
-          amadeus.getHealthCheck(),
-          plaid.getHealthCheck(),
-          gocardless.getHealthCheck(),
-          teller.getHealthCheck(),
-        ]);
+        isPlaidHealthy,
+        isGocardlessHealthy,
+        isTellerHealthy,
+      ] = await Promise.all([
+        duffel.getHealthCheck(),
+        amadeus.getHealthCheck(),
+        plaid.getHealthCheck(),
+        gocardless.getHealthCheck(),
+        teller.getHealthCheck(),
+      ]);
 
       return {
         duffel: {
           healthy: isDuffelHealthy,
         },
-        amadeus: { 
-          healthy: isAmadeusHealthy 
+        amadeus: {
+          healthy: isAmadeusHealthy,
         },
         plaid: {
           healthy: isPlaidHealthy,
@@ -99,7 +104,7 @@ export class Provider {
     }
   }
 
-async searchFlights(params: SearchFlightsRequest) {
+  async searchFlights(params: SearchFlightsRequest) {
     logger(
       "searchFlights:",
       `provider: ${this.#name} origin: ${params.origin} destination: ${params.destination}`,
@@ -139,7 +144,10 @@ async searchFlights(params: SearchFlightsRequest) {
   }
 
   async createOrder(params: CreateOrderRequest) {
-    logger("createOrder:", `provider: ${this.#name} offerId: ${params.offerId}`);
+    logger(
+      "createOrder:",
+      `provider: ${this.#name} offerId: ${params.offerId}`,
+    );
 
     const data = await this.#provider?.createOrder(params);
 
@@ -151,7 +159,10 @@ async searchFlights(params: SearchFlightsRequest) {
   }
 
   async retrieveOrder(params: RetrieveOrderRequest) {
-    logger("retrieveOrder:", `provider: ${this.#name} orderId: ${params.orderId}`);
+    logger(
+      "retrieveOrder:",
+      `provider: ${this.#name} orderId: ${params.orderId}`,
+    );
 
     const data = await this.#provider?.retrieveOrder(params);
 
@@ -163,7 +174,10 @@ async searchFlights(params: SearchFlightsRequest) {
   }
 
   async cancelOrder(params: CancelOrderRequest) {
-    logger("cancelOrder:", `provider: ${this.#name} orderId: ${params.orderId}`);
+    logger(
+      "cancelOrder:",
+      `provider: ${this.#name} orderId: ${params.orderId}`,
+    );
 
     const data = await this.#provider?.cancelOrder(params);
 
@@ -175,7 +189,10 @@ async searchFlights(params: SearchFlightsRequest) {
   }
 
   async modifyOrder(params: ModifyOrderRequest) {
-    logger("modifyOrder:", `provider: ${this.#name} orderId: ${params.orderId}`);
+    logger(
+      "modifyOrder:",
+      `provider: ${this.#name} orderId: ${params.orderId}`,
+    );
 
     const data = await this.#provider?.modifyOrder(params);
 
@@ -187,7 +204,10 @@ async searchFlights(params: SearchFlightsRequest) {
   }
 
   async addAncillaries(params: AddAncillariesRequest) {
-    logger("addAncillaries:", `provider: ${this.#name} orderId: ${params.orderId}`);
+    logger(
+      "addAncillaries:",
+      `provider: ${this.#name} orderId: ${params.orderId}`,
+    );
 
     const data = await this.#provider?.addAncillaries(params);
 
@@ -197,7 +217,6 @@ async searchFlights(params: SearchFlightsRequest) {
 
     return null;
   }
-
 
   async getTransactions(params: GetTransactionsRequest) {
     logger(
