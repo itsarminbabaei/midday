@@ -1,12 +1,27 @@
 import { Amadeus } from "amadeus";
 import { ProviderError } from "@/utils/error";
 import { logger } from "@/utils/logger";
+import { paginate } from "@/utils/paginate";
 import { withRetry } from "@/utils/retry";
 import { isError } from "./utils";
 import type { ProviderParams } from "../../types";
 import type {
   FlightOffersSearchRequest,
   FlightOffersSearchResponse,
+  FlightOffersPriceRequest,
+  FlightOffersPriceResponse,
+  FlightCreateOrderRequest,
+  FlightOrderResponse,
+  GetFlightOrderRequest,
+  GetFlightOrderResponse,
+  DeleteFlightOrderRequest,
+  DeleteFlightOrderResponse,
+  GetSeatMapRequest,
+  SeatMapResponse,
+  GetAirlineRequest,
+  AirlineResponse,
+  LocationSearchRequest,
+  LocationResponse
 } from "./types";
 
 export class AmadeusApi {
@@ -31,26 +46,49 @@ export class AmadeusApi {
     }
   }
 
-  async searchFlights(
+  async searchFlightOffers(
     params: FlightOffersSearchRequest,
   ): Promise<FlightOffersSearchResponse> {
     try {
-      const response = await withRetry(() =>
-        this.#client.shopping.flightOffersSearch.get({
-          originLocationCode: params.origin,
-          destinationLocationCode: params.destination,
-          departureDate: params.departureDate,
-          returnDate: params.returnDate,
-          adults: params.passengers.adults,
-          children: params.passengers.children,
-          infants: params.passengers.infants,
-          travelClass: params.cabinClass,
-          currencyCode: "USD", // Could be made configurable
-          max: 250,
+      const response = await this.#client.shopping.flightOffersSearch.get({
+        originLocationCode: params.originLocationCode,
+        destinationLocationCode: params.destinationLocationCode,
+        departureDate: params.departureDate,
+        adults: params.adults,
+        returnDate: params.returnDate,
+        children: params.children,
+        infants: params.infants,
+        travelClass: params.travelClass,
+        includedAirlineCodes: params.includedAirlineCodes,
+        excludedAirlineCodes: params.excludedAirlineCodes,
+        nonStop: params.nonStop,
+        currencyCode: params.currencyCode,
+        maxPrice: params.maxPrice,
+        max: params.max,
+      });
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+  async priceFlightOffers(
+    params: FlightOffersPriceRequest,
+  ): Promise<FlightOffersPriceResponse> {
+    try {
+      const response = await this.#client.shopping.flightOffers.pricing.post(
+        JSON.stringify({
+          data: {
+            type: params.data.type,
+            flightOffers: params.data.flightOffers,
+          },
         }),
       );
-
-      return response.data;
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {
@@ -60,20 +98,14 @@ export class AmadeusApi {
     }
   }
 
-  async getPricing(offerId: string) {
+  async createFlightOrder(
+    params: FlightCreateOrderRequest,
+  ): Promise<FlightOrderResponse> {
     try {
-      const response = await withRetry(() =>
-        this.#client.shopping.flightOffers.pricing.post(
-          JSON.stringify({
-            data: {
-              type: "flight-offers-pricing",
-              flightOffers: [offerId],
-            },
-          }),
-        ),
+      const response = await this.#client.booking.flightOrders.post(
+        JSON.stringify(params),
       );
-
-      return response.data;
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {
@@ -83,21 +115,81 @@ export class AmadeusApi {
     }
   }
 
-  async createOrder(params: any) {
+  async getFlightOrder(
+    params: GetFlightOrderRequest,
+  ): Promise<GetFlightOrderResponse> {
     try {
-      const response = await withRetry(() =>
-        this.#client.booking.flightOrders.post(
-          JSON.stringify({
-            data: {
-              type: "flight-order",
-              flightOffers: [params.offerId],
-              travelers: params.passengers,
-            },
-          }),
-        ),
-      );
+      const response = await this.#client.booking
+        .flightOrder(params.orderId)
+        .get();
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
 
-      return response.data;
+  async deleteFlightOrder(
+    params: DeleteFlightOrderRequest,
+  ): Promise<DeleteFlightOrderResponse> {
+    try {
+      const response = await this.#client.booking
+        .flightOrder(params.orderId)
+        .delete();
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+  async getSeatMap(params: GetSeatMapRequest): Promise<SeatMapResponse> {
+    try {
+      const response = await this.#client.shopping.seatMaps.post(
+        JSON.stringify(params),
+      );
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+    async getAirline(params: GetAirlineRequest): Promise<AirlineResponse> {
+    try {
+      const response = await this.#client.referenceData.airlines.get({
+        airlineCodes: params.airlineCodes
+      });
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+    async searchLocations(params: LocationSearchRequest): Promise<LocationResponse> {
+    try {
+      const response = await this.#client.referenceData.locations.get({
+        keyword: params.keyword,
+        subType: params.subType?.join(","),
+        countryCode: params.countryCode,
+        view: params.view,
+        "page[limit]": params.page?.limit,
+        "page[offset]": params.page?.offset
+      });
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {

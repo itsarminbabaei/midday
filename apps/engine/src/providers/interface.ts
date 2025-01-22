@@ -43,25 +43,63 @@ export interface FinanceProvider {
 }
 
 export interface TravelProvider {
-  // Shopping
-  searchFlights: (
-    params: SearchFlightsRequest,
-  ) => Promise<SearchFlightsResponse>;
-  getOffers: (params: GetOffersRequest) => Promise<GetOffersResponse>;
-  getPricing: (params: GetPricingRequest) => Promise<GetPricingResponse>;
-
-  // Ordering
-  createOrder: (params: CreateOrderRequest) => Promise<CreateOrderResponse>;
-  retrieveOrder: (
-    params: RetrieveOrderRequest,
-  ) => Promise<RetrieveOrderResponse>;
-  cancelOrder: (params: CancelOrderRequest) => Promise<CancelOrderResponse>;
-
-  // Servicing
-  modifyOrder: (params: ModifyOrderRequest) => Promise<ModifyOrderResponse>;
-  addAncillaries: (
-    params: AddAncillariesRequest,
+  // Common
   getHealthCheck: () => Promise<boolean>;
+
+  // Flights
+  flights: {
+    // Shopping (Search & Price)
+    shopping: {
+      search: (params: FlightSearchRequest) => Promise<FlightSearchResponse>;
+      getOffers: (params: GetFlightOffersRequest) => Promise<GetFlightOffersResponse>;
+      getPricing: (params: GetFlightPricingRequest) => Promise<GetFlightPricingResponse>;
+      getSeatMaps: (params: GetSeatMapsRequest) => Promise<GetSeatMapsResponse>;
+    };
+
+    // Ordering (Book & Manage)
+    ordering: {
+      create: (params: CreateFlightOrderRequest) => Promise<CreateFlightOrderResponse>;
+      retrieve: (params: RetrieveFlightOrderRequest) => Promise<RetrieveFlightOrderResponse>;
+      cancel: (params: CancelFlightOrderRequest) => Promise<CancelFlightOrderResponse>;
+    };
+
+    // Servicing (Post-booking)
+    servicing: {
+      modify: (params: ModifyFlightOrderRequest) => Promise<ModifyFlightOrderResponse>;
+      addAncillaries: (params: AddFlightAncillariesRequest) => Promise<AddFlightAncillariesResponse>;
+    };
+  };
+
+  // Stays
+  stays: {
+    // Shopping (Search & Price)
+    shopping: {
+      search: (params: StaySearchRequest) => Promise<StaySearchResponse>;
+      getOffers: (params: GetStayOffersRequest) => Promise<GetStayOffersResponse>;
+      getPricing: (params: GetStayPricingRequest) => Promise<GetStayPricingResponse>;
+    };
+
+    // Ordering (Book & Manage)
+    ordering: {
+      create: (params: CreateStayOrderRequest) => Promise<CreateStayOrderResponse>;
+      retrieve: (params: RetrieveStayOrderRequest) => Promise<RetrieveStayOrderResponse>;
+      cancel: (params: CancelStayOrderRequest) => Promise<CancelStayOrderResponse>;
+    };
+
+    // Servicing (Post-booking)
+    servicing: {
+      modify: (params: ModifyStayOrderRequest) => Promise<ModifyStayOrderResponse>;
+      addServices: (params: AddStayServicesRequest) => Promise<AddStayServicesResponse>;
+    };
+  };
+
+  // Supporting Data
+  data: {
+    getAirports: (params: GetAirportsRequest) => Promise<GetAirportsResponse>;
+    getCities: (params: GetCitiesRequest) => Promise<GetCitiesResponse>;
+    getAirlines: (params: GetAirlinesRequest) => Promise<GetAirlinesResponse>;
+    getAircrafts: (params: GetAircraftsRequest) => Promise<GetAircraftsResponse>;
+  };
 }
 
 export type Provider = FinanceProvider | TravelProvider;
