@@ -6,31 +6,60 @@ import { withRetry } from "@/utils/retry";
 import { isError } from "./utils";
 import type { ProviderParams } from "../../types";
 import type {
+  CreatePartialOfferRequest,
+  PartialOfferRequestResponse,
+  GetPartialOfferRequest,
+  GetPartialOfferFaresRequest,
+  ListPartialOfferRequestsParams,
   GetOfferRequest,
+  OfferResponse,
   ListOffersRequest,
-  CreateOrderRequest,
-  GetSeatMapsRequest,
-  CreateOrderCancellationRequest,
-  CreateOrderChangeRequestRequest,
-  CreatePartialOfferRequestRequest,
   UpdateOfferPassengerRequest,
+  UpdateOfferPassengerResponse,
+  CreateOrderRequest,
+  OrderResponse,
   ListOrdersRequest,
   GetOrderRequest,
   UpdateOrderRequest,
-  AddOrderServiceRequest,
   CreatePaymentRequest,
+  PaymentResponse,
+  GetSeatMapsRequest,
+  SeatMapResponse,
+  GetOrderChangeRequest,
+  OrderChangeResponse,
+  ConfirmOrderChangeRequest,
+  CreateOrderCancellationRequest,
+  OrderCancellationResponse,
   GetOrderCancellationRequest,
   ConfirmOrderCancellationRequest,
-  GetOrderChangeRequestRequest,
+  ListOrderCancellationsRequest,
   ListOrderChangeOffersRequest,
   GetOrderChangeOfferRequest,
-  ConfirmOrderChangeRequest,
-  GetOrderChangeRequest,
-  GetPartialOfferFaresRequest,
-  GetPartialOfferRequestRequest,
-  UpdateAirlineInitiatedChangeRequest,
-  AcceptAirlineInitiatedChangeRequest,
+  OrderChangeOfferResponse,
+  CreateOrderChangeRequestRequest,
+  GetOrderChangeRequestRequest,
+  OrderChangeRequestResponse,
   ListAirlineInitiatedChangesRequest,
+  UpdateAirlineInitiatedChangeRequest,
+  AirlineInitiatedChangeResponse,
+  AcceptAirlineInitiatedChangeRequest,
+  ListAirlinesRequest,
+  GetAirlineRequest,
+  AirlineResponse,
+  ListAircraftRequest,
+  GetAircraftRequest,
+  AircraftResponse,
+  ListAirportsRequest,
+  GetAirportRequest,
+  AirportResponse,
+  ListCitiesRequest,
+  GetCityRequest,
+  CityResponse,
+  SearchPlacesRequest,
+  PlaceResponse,
+  ListLoyaltyProgrammesRequest,
+  GetLoyaltyProgrammeRequest,
+  LoyaltyProgrammeResponse,
 } from "./types";
 
 export class DuffelApi {
@@ -53,10 +82,17 @@ export class DuffelApi {
     }
   }
 
-  async getOffer(params: GetOfferRequest) {
+  async createPartialOfferRequest(
+    params: CreatePartialOfferRequest,
+  ): Promise<PartialOfferRequestResponse> {
     try {
-      const response = await this.#client.offers.get(params);
-      return response.data;
+      const response = await this.#client.partialOfferRequests.create({
+        slices: params.slices,
+        passengers: params.passengers,
+        cabin_class: params.cabin_class,
+        supplier_timeout: params.supplier_timeout,
+      });
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {
@@ -66,10 +102,14 @@ export class DuffelApi {
     }
   }
 
-  async updateOfferPassenger(params: UpdateOfferPassengerRequest) {
+  async getPartialOfferRequest(
+    params: GetPartialOfferRequest,
+  ): Promise<PartialOfferRequestResponse> {
     try {
-      const response = await this.#client.offers.updatePassenger(params);
-      return response.data;
+      const response = await this.#client.partialOfferRequests.get({
+        id: params.id,
+      });
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {
@@ -79,7 +119,58 @@ export class DuffelApi {
     }
   }
 
-  async listOffers(params?: ListOffersRequest) {
+  async getPartialOfferFares(
+    params: GetPartialOfferFaresRequest,
+  ): Promise<PartialOfferRequestResponse> {
+    try {
+      const response = await this.#client.partialOfferRequests.getFullFares({
+        id: params.id,
+        options: params.options,
+      });
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+  async listPartialOfferRequests(params?: ListPartialOfferRequestsParams) {
+    return paginate({
+      delay: { milliseconds: 100, onDelay: (message) => logger(message) },
+      pageSize: 50,
+      fetchData: (offset, limit) =>
+        withRetry(() =>
+          this.#client.partialOfferRequests
+            .list({
+              ...params,
+              offset,
+              limit,
+            })
+            .then(({ data }) => data.partial_offer_requests),
+        ),
+    });
+  }
+
+  async getOffer(params: GetOfferRequest): Promise<OfferResponse> {
+    try {
+      const response = await this.#client.offers.get({
+        id: params.id,
+        return_available_services: params.return_available_services,
+      });
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+  async listOffers(params: ListOffersRequest) {
     return paginate({
       delay: { milliseconds: 100, onDelay: (message) => logger(message) },
       pageSize: 50,
@@ -94,6 +185,40 @@ export class DuffelApi {
             .then(({ data }) => data.offers),
         ),
     });
+  }
+
+  async updateOfferPassenger(
+    params: UpdateOfferPassengerRequest,
+  ): Promise<UpdateOfferPassengerResponse> {
+    try {
+      const response = await this.#client.offers.updatePassenger({
+        offerId: params.offer_id,
+        passengerId: params.passenger_id,
+        given_name: params.given_name,
+        family_name: params.family_name,
+        loyalty_programme_accounts: params.loyalty_programme_accounts,
+      });
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+  async createOrder(params: CreateOrderRequest): Promise<OrderResponse> {
+    try {
+      const response = await this.#client.orders.create(params);
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
   }
 
   async listOrders(params?: ListOrdersRequest) {
@@ -113,10 +238,12 @@ export class DuffelApi {
     });
   }
 
-  async createOrder(params: CreateOrderRequest) {
+  async getOrder(params: GetOrderRequest): Promise<OrderResponse> {
     try {
-      const response = await this.#client.orders.create(params);
-      return response.data;
+      const response = await this.#client.orders.get({
+        id: params.id,
+      });
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {
@@ -126,10 +253,13 @@ export class DuffelApi {
     }
   }
 
-  async getOrder(params: GetOrderRequest) {
+  async updateOrder(params: UpdateOrderRequest): Promise<OrderResponse> {
     try {
-      const response = await this.#client.orders.get(params);
-      return response.data;
+      const response = await this.#client.orders.update({
+        id: params.id,
+        metadata: params.metadata,
+      });
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {
@@ -139,10 +269,18 @@ export class DuffelApi {
     }
   }
 
-  async updateOrder(params: UpdateOrderRequest) {
+  async createPayment(params: CreatePaymentRequest): Promise<PaymentResponse> {
     try {
-      const response = await this.#client.orders.update(params);
-      return response.data;
+      const response = await this.#client.payments.create({
+        order_id: params.order_id,
+        payment: {
+          type: params.payment.type,
+          amount: params.payment.amount,
+          currency: params.payment.currency,
+          card: params.payment.card,
+        },
+      });
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {
@@ -152,10 +290,12 @@ export class DuffelApi {
     }
   }
 
-  async addOrderService(params: AddOrderServiceRequest) {
+  async getSeatMaps(params: GetSeatMapsRequest): Promise<SeatMapResponse> {
     try {
-      const response = await this.#client.orders.addServices(params);
-      return response.data;
+      const response = await this.#client.seatMaps.get({
+        offer_id: params.offer_id,
+      });
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {
@@ -165,10 +305,14 @@ export class DuffelApi {
     }
   }
 
-  async createPayment(params: CreatePaymentRequest) {
+  async getOrderChange(
+    params: GetOrderChangeRequest,
+  ): Promise<OrderChangeResponse> {
     try {
-      const response = await this.#client.payments.create(params);
-      return response.data;
+      const response = await this.#client.orderChanges.get({
+        id: params.id,
+      });
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {
@@ -178,10 +322,66 @@ export class DuffelApi {
     }
   }
 
-  async getSeatMaps(params: GetSeatMapsRequest) {
+  async confirmOrderChange(
+    params: ConfirmOrderChangeRequest,
+  ): Promise<OrderChangeResponse> {
     try {
-      const response = await this.#client.seatMaps.get(params);
-      return response.data;
+      const response = await this.#client.orderChanges.confirm({
+        id: params.id,
+        payment: params.payment,
+      });
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+  async createOrderCancellation(
+    params: CreateOrderCancellationRequest,
+  ): Promise<OrderCancellationResponse> {
+    try {
+      const response = await this.#client.orderCancellations.create({
+        order_id: params.order_id,
+      });
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+  async getOrderCancellation(
+    params: GetOrderCancellationRequest,
+  ): Promise<OrderCancellationResponse> {
+    try {
+      const response = await this.#client.orderCancellations.get({
+        id: params.id,
+      });
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+  async confirmOrderCancellation(
+    params: ConfirmOrderCancellationRequest,
+  ): Promise<OrderCancellationResponse> {
+    try {
+      const response = await this.#client.orderCancellations.confirm({
+        id: params.id,
+      });
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {
@@ -203,77 +403,12 @@ export class DuffelApi {
               offset,
               limit,
             })
-            .then(({ data }) => data.orderCancellations),
+            .then(({ data }) => data.order_cancellations),
         ),
     });
   }
 
-  async createOrderCancellation(params: CreateOrderCancellationRequest) {
-    try {
-      const response = await this.#client.orderCancellations.create(params);
-      return response.data;
-    } catch (error) {
-      const parsedError = isError(error);
-      if (parsedError) {
-        throw new ProviderError(parsedError);
-      }
-      throw error;
-    }
-  }
-
-  async getOrderCancellation(params: GetOrderCancellationRequest) {
-    try {
-      const response = await this.#client.orderCancellations.get(params);
-      return response.data;
-    } catch (error) {
-      const parsedError = isError(error);
-      if (parsedError) {
-        throw new ProviderError(parsedError);
-      }
-      throw error;
-    }
-  }
-
-  async confirmOrderCancellation(params: ConfirmOrderCancellationRequest) {
-    try {
-      const response = await this.#client.orderCancellations.confirm(params);
-      return response.data;
-    } catch (error) {
-      const parsedError = isError(error);
-      if (parsedError) {
-        throw new ProviderError(parsedError);
-      }
-      throw error;
-    }
-  }
-
-  async createOrderChangeRequest(params: CreateOrderChangeRequestRequest) {
-    try {
-      const response = await this.#client.orderChangeRequests.create(params);
-      return response.data;
-    } catch (error) {
-      const parsedError = isError(error);
-      if (parsedError) {
-        throw new ProviderError(parsedError);
-      }
-      throw error;
-    }
-  }
-
-  async getOrderChangeRequest(params: GetOrderChangeRequestRequest) {
-    try {
-      const response = await this.#client.orderChangeRequests.get(params);
-      return response.data;
-    } catch (error) {
-      const parsedError = isError(error);
-      if (parsedError) {
-        throw new ProviderError(parsedError);
-      }
-      throw error;
-    }
-  }
-
-  async listOrderChangeOffers(params?: ListOrderChangeOffersRequest) {
+  async listOrderChangeOffers(params: ListOrderChangeOffersRequest) {
     return paginate({
       delay: { milliseconds: 100, onDelay: (message) => logger(message) },
       pageSize: 50,
@@ -285,15 +420,20 @@ export class DuffelApi {
               offset,
               limit,
             })
-            .then(({ data }) => data.orderChangeOffers),
+            .then(({ data }) => data.order_change_offers),
         ),
     });
   }
 
-  async getOrderChangeOffer(params: GetOrderChangeOfferRequest) {
+  async getOrderChangeOffer(
+    params: GetOrderChangeOfferRequest,
+  ): Promise<OrderChangeOfferResponse> {
     try {
-      const response = await this.#client.orderChangeOffers.get(params);
-      return response.data;
+      const response = await this.#client.orderChangeOffers.get({
+        id: params.id,
+        return_available_services: params.return_available_services,
+      });
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {
@@ -303,10 +443,15 @@ export class DuffelApi {
     }
   }
 
-  async confirmOrderChange(params: ConfirmOrderChangeRequest) {
+  async createOrderChangeRequest(
+    params: CreateOrderChangeRequestRequest,
+  ): Promise<OrderChangeRequestResponse> {
     try {
-      const response = await this.#client.orderChanges.confirm(params);
-      return response.data;
+      const response = await this.#client.orderChangeRequests.create({
+        order_id: params.order_id,
+        slices: params.slices,
+      });
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {
@@ -316,50 +461,14 @@ export class DuffelApi {
     }
   }
 
-  async getOrderChange(params: GetOrderChangeRequest) {
+  async getOrderChangeRequest(
+    params: GetOrderChangeRequestRequest,
+  ): Promise<OrderChangeRequestResponse> {
     try {
-      const response = await this.#client.orderChanges.get(params);
-      return response.data;
-    } catch (error) {
-      const parsedError = isError(error);
-      if (parsedError) {
-        throw new ProviderError(parsedError);
-      }
-      throw error;
-    }
-  }
-
-  async getPartialOfferFares(params: GetPartialOfferFaresRequest) {
-    try {
-      const response =
-        await this.#client.partialOfferRequests.getFullFares(params);
-      return response.data;
-    } catch (error) {
-      const parsedError = isError(error);
-      if (parsedError) {
-        throw new ProviderError(parsedError);
-      }
-      throw error;
-    }
-  }
-
-  async getPartialOfferRequest(params: GetPartialOfferRequestRequest) {
-    try {
-      const response = await this.#client.partialOfferRequests.get(params);
-      return response.data;
-    } catch (error) {
-      const parsedError = isError(error);
-      if (parsedError) {
-        throw new ProviderError(parsedError);
-      }
-      throw error;
-    }
-  }
-
-  async createPartialOfferRequest(params: CreatePartialOfferRequestRequest) {
-    try {
-      const response = await this.#client.partialOfferRequests.create(params);
-      return response.data;
+      const response = await this.#client.orderChangeRequests.get({
+        id: params.id,
+      });
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {
@@ -383,18 +492,20 @@ export class DuffelApi {
               offset,
               limit,
             })
-            .then(({ data }) => data.airlineInitiatedChanges),
+            .then(({ data }) => data.airline_initiated_changes),
         ),
     });
   }
 
   async updateAirlineInitiatedChange(
     params: UpdateAirlineInitiatedChangeRequest,
-  ) {
+  ): Promise<AirlineInitiatedChangeResponse> {
     try {
-      const response =
-        await this.#client.airlineInitiatedChanges.update(params);
-      return response.data;
+      const response = await this.#client.airlineInitiatedChanges.update({
+        id: params.id,
+        action_taken: params.action_taken,
+      });
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {
@@ -406,11 +517,191 @@ export class DuffelApi {
 
   async acceptAirlineInitiatedChange(
     params: AcceptAirlineInitiatedChangeRequest,
-  ) {
+  ): Promise<AirlineInitiatedChangeResponse> {
     try {
-      const response =
-        await this.#client.airlineInitiatedChanges.accept(params);
-      return response.data;
+      const response = await this.#client.airlineInitiatedChanges.accept({
+        id: params.id,
+      });
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+  async listAirlines(params?: ListAirlinesRequest) {
+    return paginate({
+      delay: { milliseconds: 100, onDelay: (message) => logger(message) },
+      pageSize: 50,
+      fetchData: (offset, limit) =>
+        withRetry(() =>
+          this.#client.airlines
+            .list({
+              ...params,
+              offset,
+              limit,
+            })
+            .then(({ data }) => data.airlines),
+        ),
+    });
+  }
+
+  async getAirline(params: GetAirlineRequest): Promise<AirlineResponse> {
+    try {
+      const response = await this.#client.airlines.get({
+        id: params.id,
+      });
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+  async listAircraft(params?: ListAircraftRequest) {
+    return paginate({
+      delay: { milliseconds: 100, onDelay: (message) => logger(message) },
+      pageSize: 50,
+      fetchData: (offset, limit) =>
+        withRetry(() =>
+          this.#client.aircraft
+            .list({
+              ...params,
+              offset,
+              limit,
+            })
+            .then(({ data }) => data.aircraft),
+        ),
+    });
+  }
+
+  async getAircraft(params: GetAircraftRequest): Promise<AircraftResponse> {
+    try {
+      const response = await this.#client.aircraft.get({
+        id: params.id,
+      });
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+  async listAirports(params?: ListAirportsRequest) {
+    return paginate({
+      delay: { milliseconds: 100, onDelay: (message) => logger(message) },
+      pageSize: 50,
+      fetchData: (offset, limit) =>
+        withRetry(() =>
+          this.#client.airports
+            .list({
+              ...params,
+              offset,
+              limit,
+            })
+            .then(({ data }) => data.airports),
+        ),
+    });
+  }
+
+  async getAirport(params: GetAirportRequest): Promise<AirportResponse> {
+    try {
+      const response = await this.#client.airports.get({
+        id: params.id,
+      });
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+  async listCities(params?: ListCitiesRequest) {
+    return paginate({
+      delay: { milliseconds: 100, onDelay: (message) => logger(message) },
+      pageSize: 50,
+      fetchData: (offset, limit) =>
+        withRetry(() =>
+          this.#client.cities
+            .list({
+              ...params,
+              offset,
+              limit,
+            })
+            .then(({ data }) => data.cities),
+        ),
+    });
+  }
+
+  async getCity(params: GetCityRequest): Promise<CityResponse> {
+    try {
+      const response = await this.#client.cities.get({
+        id: params.id,
+      });
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+  async searchPlaces(params: SearchPlacesRequest): Promise<PlaceResponse> {
+    try {
+      const response = await this.#client.places.get({
+        query: params.query,
+        type: params.type,
+        limit: params.limit,
+      });
+      return response;
+    } catch (error) {
+      const parsedError = isError(error);
+      if (parsedError) {
+        throw new ProviderError(parsedError);
+      }
+      throw error;
+    }
+  }
+
+  async listLoyaltyProgrammes(params?: ListLoyaltyProgrammesRequest) {
+    return paginate({
+      delay: { milliseconds: 100, onDelay: (message) => logger(message) },
+      pageSize: 50,
+      fetchData: (offset, limit) =>
+        withRetry(() =>
+          this.#client.loyaltyProgrammes
+            .list({
+              ...params,
+              offset,
+              limit,
+            })
+            .then(({ data }) => data.loyalty_programmes),
+        ),
+    });
+  }
+
+  async getLoyaltyProgramme(
+    params: GetLoyaltyProgrammeRequest,
+  ): Promise<LoyaltyProgrammeResponse> {
+    try {
+      const response = await this.#client.loyaltyProgrammes.get({
+        id: params.id,
+      });
+      return response;
     } catch (error) {
       const parsedError = isError(error);
       if (parsedError) {

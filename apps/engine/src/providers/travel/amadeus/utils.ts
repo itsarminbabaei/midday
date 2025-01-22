@@ -1,10 +1,11 @@
 type AmadeusErrorResponse = {
   response?: {
-    result?: {
+    data?: {
       errors?: Array<{
-        code: string;
-        title?: string;
-        detail?: string;
+        code: number;
+        title: string;
+        detail: string;
+        status: number;
       }>;
     };
   };
@@ -12,12 +13,12 @@ type AmadeusErrorResponse = {
 
 export function isError(error: unknown) {
   if (!error) return false;
-  if (!(error instanceof Error)) return false;
+  
   const amadeusError = error as AmadeusErrorResponse;
-  if (amadeusError.response?.result?.errors) {
-    const [error] = amadeusError.response.result.errors;
+  if (amadeusError.response?.data?.errors?.[0]) {
+    const [error] = amadeusError.response.data.errors;
     return {
-      code: error.code,
+      code: error.code.toString(),
       message: error.detail || error.title,
     };
   }
