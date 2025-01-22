@@ -30,7 +30,7 @@ import type {
   GetPartialOfferRequestRequest,
   UpdateAirlineInitiatedChangeRequest,
   AcceptAirlineInitiatedChangeRequest,
-  ListAirlineInitiatedChangesRequest
+  ListAirlineInitiatedChangesRequest,
 } from "./types";
 
 export class DuffelApi {
@@ -83,13 +83,15 @@ export class DuffelApi {
     return paginate({
       delay: { milliseconds: 100, onDelay: (message) => logger(message) },
       pageSize: 50,
-      fetchData: (offset, limit) => 
-        withRetry(() => 
-          this.#client.offers.list({
-            ...params,
-            offset,
-            limit,
-          }).then(({ data }) => data.offers)
+      fetchData: (offset, limit) =>
+        withRetry(() =>
+          this.#client.offers
+            .list({
+              ...params,
+              offset,
+              limit,
+            })
+            .then(({ data }) => data.offers),
         ),
     });
   }
@@ -98,13 +100,15 @@ export class DuffelApi {
     return paginate({
       delay: { milliseconds: 100, onDelay: (message) => logger(message) },
       pageSize: 50,
-      fetchData: (offset, limit) => 
-        withRetry(() => 
-          this.#client.orders.list({
-            ...params,
-            offset,
-            limit,
-          }).then(({ data }) => data.orders)
+      fetchData: (offset, limit) =>
+        withRetry(() =>
+          this.#client.orders
+            .list({
+              ...params,
+              offset,
+              limit,
+            })
+            .then(({ data }) => data.orders),
         ),
     });
   }
@@ -191,13 +195,15 @@ export class DuffelApi {
     return paginate({
       delay: { milliseconds: 100, onDelay: (message) => logger(message) },
       pageSize: 50,
-      fetchData: (offset, limit) => 
-        withRetry(() => 
-          this.#client.orderCancellations.list({
-            ...params,
-            offset,
-            limit,
-          }).then(({ data }) => data.orderCancellations)
+      fetchData: (offset, limit) =>
+        withRetry(() =>
+          this.#client.orderCancellations
+            .list({
+              ...params,
+              offset,
+              limit,
+            })
+            .then(({ data }) => data.orderCancellations),
         ),
     });
   }
@@ -271,13 +277,15 @@ export class DuffelApi {
     return paginate({
       delay: { milliseconds: 100, onDelay: (message) => logger(message) },
       pageSize: 50,
-      fetchData: (offset, limit) => 
-        withRetry(() => 
-          this.#client.orderChangeOffers.list({
-            ...params,
-            offset,
-            limit,
-          }).then(({ data }) => data.orderChangeOffers)
+      fetchData: (offset, limit) =>
+        withRetry(() =>
+          this.#client.orderChangeOffers
+            .list({
+              ...params,
+              offset,
+              limit,
+            })
+            .then(({ data }) => data.orderChangeOffers),
         ),
     });
   }
@@ -323,7 +331,8 @@ export class DuffelApi {
 
   async getPartialOfferFares(params: GetPartialOfferFaresRequest) {
     try {
-      const response = await this.#client.partialOfferRequests.getFullFares(params);
+      const response =
+        await this.#client.partialOfferRequests.getFullFares(params);
       return response.data;
     } catch (error) {
       const parsedError = isError(error);
@@ -360,24 +369,31 @@ export class DuffelApi {
     }
   }
 
-  async listAirlineInitiatedChanges(params: ListAirlineInitiatedChangesRequest) {
+  async listAirlineInitiatedChanges(
+    params: ListAirlineInitiatedChangesRequest,
+  ) {
     return paginate({
       delay: { milliseconds: 100, onDelay: (message) => logger(message) },
       pageSize: 50,
-      fetchData: (offset, limit) => 
-        withRetry(() => 
-          this.#client.airlineInitiatedChanges.list({
-            ...params,
-            offset,
-            limit,
-          }).then(({ data }) => data.airlineInitiatedChanges)
+      fetchData: (offset, limit) =>
+        withRetry(() =>
+          this.#client.airlineInitiatedChanges
+            .list({
+              ...params,
+              offset,
+              limit,
+            })
+            .then(({ data }) => data.airlineInitiatedChanges),
         ),
     });
   }
 
-  async updateAirlineInitiatedChange(params: UpdateAirlineInitiatedChangeRequest) {
+  async updateAirlineInitiatedChange(
+    params: UpdateAirlineInitiatedChangeRequest,
+  ) {
     try {
-      const response = await this.#client.airlineInitiatedChanges.update(params);
+      const response =
+        await this.#client.airlineInitiatedChanges.update(params);
       return response.data;
     } catch (error) {
       const parsedError = isError(error);
@@ -388,9 +404,12 @@ export class DuffelApi {
     }
   }
 
-  async acceptAirlineInitiatedChange(params: AcceptAirlineInitiatedChangeRequest) {
+  async acceptAirlineInitiatedChange(
+    params: AcceptAirlineInitiatedChangeRequest,
+  ) {
     try {
-      const response = await this.#client.airlineInitiatedChanges.accept(params);
+      const response =
+        await this.#client.airlineInitiatedChanges.accept(params);
       return response.data;
     } catch (error) {
       const parsedError = isError(error);
@@ -401,4 +420,3 @@ export class DuffelApi {
     }
   }
 }
-

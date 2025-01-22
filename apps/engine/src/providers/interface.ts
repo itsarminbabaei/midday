@@ -30,7 +30,9 @@ import type {
 } from "./types";
 
 export interface FinanceProvider {
-  getTransactions: (params: GetTransactionsRequest) => Promise<GetTransactionsResponse>;
+  getTransactions: (
+    params: GetTransactionsRequest,
+  ) => Promise<GetTransactionsResponse>;
   getAccounts: (params: GetAccountsRequest) => Promise<GetAccountsResponse>;
   getAccountBalance: (params: GetAccountBalanceRequest) => Promise<GetAccountBalanceResponse>;
   getInstitutions: (params: GetInstitutionsRequest) => Promise<GetInstitutionsResponse>;
@@ -42,20 +44,24 @@ export interface FinanceProvider {
 
 export interface TravelProvider {
   // Shopping
-  searchFlights: (params: SearchFlightsRequest) => Promise<SearchFlightsResponse>;
+  searchFlights: (
+    params: SearchFlightsRequest,
+  ) => Promise<SearchFlightsResponse>;
   getOffers: (params: GetOffersRequest) => Promise<GetOffersResponse>;
   getPricing: (params: GetPricingRequest) => Promise<GetPricingResponse>;
-  
+
   // Ordering
   createOrder: (params: CreateOrderRequest) => Promise<CreateOrderResponse>;
-  retrieveOrder: (params: RetrieveOrderRequest) => Promise<RetrieveOrderResponse>;
+  retrieveOrder: (
+    params: RetrieveOrderRequest,
+  ) => Promise<RetrieveOrderResponse>;
   cancelOrder: (params: CancelOrderRequest) => Promise<CancelOrderResponse>;
-  
+
   // Servicing
   modifyOrder: (params: ModifyOrderRequest) => Promise<ModifyOrderResponse>;
-  addAncillaries: (params: AddAncillariesRequest) => Promise<AddAncillariesResponse>;
+  addAncillaries: (
+    params: AddAncillariesRequest,
   getHealthCheck: () => Promise<boolean>;
 }
 
 export type Provider = FinanceProvider | TravelProvider;
-

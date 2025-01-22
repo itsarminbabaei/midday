@@ -1,6 +1,11 @@
 import type { AccountType } from "@/utils/account";
 
-export type Providers = "duffel" | "amadeus" | "teller" | "plaid" | "gocardless";
+export type Providers =
+  | "duffel"
+  | "amadeus"
+  | "teller"
+  | "plaid"
+  | "gocardless";
 
 export type ProviderParams = {
   provider: Providers;
@@ -190,7 +195,7 @@ export type Address = {
   country: string;
 };
 
-export type OrderStatus = 
+export type OrderStatus =
   | "pending"
   | "confirmed"
   | "ticketed"

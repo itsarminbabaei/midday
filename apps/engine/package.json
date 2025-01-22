@@ -14,17 +14,17 @@
     "@hono/zod-openapi": "^0.18.3",
     "@hono/zod-validator": "^0.4.1",
     "amadeus": "^11.0.0",
-    "hono": "^4.6.13",
+    "hono": "^4.6.17",
     "plaid": "^30.0.0",
     "typesense": "^1.8.2",
     "workers-ai-provider": "^0.0.10",
-    "xior": "^0.6.1",
-    "zod": "^3.23.8"
+    "xior": "^0.6.3",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241205.0",
-    "@types/bun": "^1.1.14",
-    "wrangler": "^3.99.0"
+    "@types/bun": "^1.1.17",
+    "wrangler": "^3.103.2"
   },
   "exports": {
     "./client": "./src/client/index.ts",

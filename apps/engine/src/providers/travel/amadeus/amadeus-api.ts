@@ -22,8 +22,8 @@ export class AmadeusApi {
   async getHealthCheck() {
     try {
       await this.#client.referenceData.location.get({
-        keyword: 'LON',
-        subType: Amadeus.location.city
+        keyword: "LON",
+        subType: Amadeus.location.city,
       });
       return true;
     } catch {
@@ -31,9 +31,11 @@ export class AmadeusApi {
     }
   }
 
-  async searchFlights(params: FlightOffersSearchRequest): Promise<FlightOffersSearchResponse> {
+  async searchFlights(
+    params: FlightOffersSearchRequest,
+  ): Promise<FlightOffersSearchResponse> {
     try {
-      const response = await withRetry(() => 
+      const response = await withRetry(() =>
         this.#client.shopping.flightOffersSearch.get({
           originLocationCode: params.origin,
           destinationLocationCode: params.destination,
@@ -43,9 +45,9 @@ export class AmadeusApi {
           children: params.passengers.children,
           infants: params.passengers.infants,
           travelClass: params.cabinClass,
-          currencyCode: 'USD', // Could be made configurable
-          max: 250
-        })
+          currencyCode: "USD", // Could be made configurable
+          max: 250,
+        }),
       );
 
       return response.data;
@@ -60,15 +62,15 @@ export class AmadeusApi {
 
   async getPricing(offerId: string) {
     try {
-      const response = await withRetry(() => 
+      const response = await withRetry(() =>
         this.#client.shopping.flightOffers.pricing.post(
           JSON.stringify({
             data: {
-              type: 'flight-offers-pricing',
-              flightOffers: [offerId]
-            }
-          })
-        )
+              type: "flight-offers-pricing",
+              flightOffers: [offerId],
+            },
+          }),
+        ),
       );
 
       return response.data;
@@ -83,16 +85,16 @@ export class AmadeusApi {
 
   async createOrder(params: any) {
     try {
-      const response = await withRetry(() => 
+      const response = await withRetry(() =>
         this.#client.booking.flightOrders.post(
           JSON.stringify({
             data: {
-              type: 'flight-order',
+              type: "flight-order",
               flightOffers: [params.offerId],
-              travelers: params.passengers
-            }
-          })
-        )
+              travelers: params.passengers,
+            },
+          }),
+        ),
       );
 
       return response.data;

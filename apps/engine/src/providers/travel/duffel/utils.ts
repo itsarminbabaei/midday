@@ -9,4 +9,3 @@ export function isError(error: unknown) {
     message: error.errors[0].message,
   };
 }
-
